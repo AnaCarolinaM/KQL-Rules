@@ -1,0 +1,14 @@
+//Autor: Ana Marinho
+//Data : 01/01/2024
+//Objetivo : Detecta atividade de execução de ransomware Rorschach
+//Referencias : https://research.checkpoint.com/2023/rorschach-a-new-sophisticated-and-fast-ransomware/
+
+SecurityEvent
+| where ((NewProcessName endswith @'\bcdedit.exe' 
+            or NewProcessName endswith @'\net.exe' 
+            or NewProcessName endswith @'\net1.exe' 
+            or NewProcessName endswith @'\netsh.exe' 
+            or NewProcessName endswith @'\wevtutil.exe' 
+            or NewProcessName endswith @'\vssadmin.exe') 
+        and CommandLine contains @'11111111')
+
