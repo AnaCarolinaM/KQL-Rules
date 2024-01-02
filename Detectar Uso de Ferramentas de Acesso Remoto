@@ -1,0 +1,30 @@
+// Autor    : Ana Carolina Marinho
+// Data     : 01/01/2024
+// Objetivo : Identificar execção de ferramentas de acesso remoto
+
+DeviceProcessEvents
+//inserir ou remover executáveis (.exe) de ferramentas de acesso remoto da lista:
+
+| where InitiatingProcessFileName in~ ("AnyDesk.exe", "TeamViewer.exe", "TeamViewer_Desktop.exe", "TeamViewer_Service.exe", "tv_w32.exe", "tv_x64.exe", "ConnectWiseControl.exe", "Pulseway.exe", "RemotePC.exe", "RemoteUtilities.exe", "Kaseya.exe", "NetSupport.exe", "GoToMyPC.exe", "Splashtop.exe", "N- Able.exe", "Atera.exe", "Bomgar.exe", "ZohoAssist.exe","rpcgrab.exe", "rpcsetup.exe", "action1_agent.exe", "aeroadmin.exe", "alitask.exe", "alpemix.exe", "AMMYY_Admin.exe", "anydesk.exe", "apc_host.exe", "ateraagent.exe", "syncrosetup.exe", "auvik.agent.exe", "auvik.engine.exe", "beamyourscreen.exe", "beamyourscreen-host.exe", "basupsrvc.exe", "basupsrvcupdate.exe", "basuptshelper.exe", "bomgar-scc.exe", "CagService.exe", "ctiserv.exe", "remote_host.exe", "cloudflared.exe", "connectwisechat-customer.exe", "connectwisecontrol.client.exe", "itsmagent.exe", "rviewer.exe", "crossloopservice.exe", "PCIVIDEO.EXE", "supporttool.exe", "dntus*.exe", "dwrcs.exe", "domotz_bash.exe", "echoserver*.exe", "echoware.dll", "ehorus standalone.exe", "remoteconsole.exe", "accessserver.exe", "ericomconnnectconfigurationtool.exe", "era.exe", "ezhelp*.exe", "eratool.exe", "ezhelpclient.exe", "ezhelpclientmanager.exe", "fastclient.exe", "fastmaster.exe", "fixmeitclient.exe", "fleetdeck_agent_svc.exe", "gp3.exe", "gp4.exe", "gp5.exe", "getscreen.exe", "g2a*.exe", "gotoassist.exe", "gotohttp.exe", "g2file*.exe", "g2quick.exe", "g2svc.exe", "g2tray.exe", "goverrmc.exe", "govsrv*.exe", "guacd.exe", "helpbeam*.exe", "iit.exe", "intouch.exe", "hsloader.exe", "ihcserver.exe", "instanthousecall.exe", "iadmin.exe", "intelliadmin.exe", "iperius.exe", "iperiusremote.exe", "ITSMAgent.exe", "ItsmRsp.exe", "ITSMService.exe", "RDesktop.exe", "RHost.exe", "RmmService.exe", "islalwaysonmonitor.exe", "isllight.exe", "isllightservice.exe", "jumpclient.exe", "jumpdesktop.exe", "jumpservice.exe", "agentmon.exe", "ltsvc.exe", "ltsvcmon.exe", "lttray.exe", "issuser.exe", "landeskagentbootstrap.exe", "ldinv32.exe", "ldsensors.exe", "laplink.exe", "laplinkeverywhere.exe", "llrcservice.exe", "serverproxyservice.exe", "laplink.exe", "tsircusr.exe", "romfusclient.exe", "romserver.exe", "romviewer.exe", "lmiguardiansvc.exe", "lmiignition.exe", "logmein.exe", "logmeinsystray.exe", "mesh*.exe", "mikogo.exe", "mikogolauncher.exe", "mikogo-service.exe", "mikogo-starter.exe", "mionet.exe", "mionetmanager.exe", "myivomanager.exe", "myivomgr.exe", "nhostsvc.exe", "nhstw32.exe", "nldrw32.exe", "rmserverconsolemediator.exe", "client32.exe", "pcictlui.exe", "neturo.exe", "ntrntservice.exe", "netviewer*.exe", "netviewer.exe", "ngrok.exe", "ninjarmmagent.exe", "nomachine*.exe", "nxd.exe", "nateon*.exe", "nateon.exe", "nateonmain.exe", "ocsinventory.exe", "remote_host.exe")
+
+| project
+    InitiatingProcessAccountName,
+    AccountUpn,
+    ActionType,
+    FileName,
+    FolderPath,
+    DeviceName,
+    InitiatingProcessCommandLine,
+    InitiatingProcessIntegrityLevel 
+| extend AlertDetails = strcat("Detecção de execução de ferramenta de acesso remoto: ", InitiatingProcessCommandLine, "com previlégio ", InitiatingProcessIntegrityLevel)
+// "System" significa que a execução foi realizada com previlégio de sistema, "High" significa que a execução foi realizada com previlégio administrativo e "Medium" significa que a execução foi realizada com previlégio de usuário comum
+| project-reorder
+    InitiatingProcessAccountName,
+    AccountUpn,
+    ActionType,
+    FileName,
+    FolderPath,
+    DeviceName,
+    InitiatingProcessCommandLine,
+    InitiatingProcessIntegrityLevel,
+    AlertDetails
