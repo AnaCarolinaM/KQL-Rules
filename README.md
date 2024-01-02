@@ -1,2 +1,2 @@
 # KQL-Rules
-Repositório com regras de detecção ou hunting usando KQL
+Repositório com KQLs para regras de detecção, hunting etc
