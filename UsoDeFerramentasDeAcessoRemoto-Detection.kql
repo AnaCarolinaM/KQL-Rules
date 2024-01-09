@@ -1,6 +1,6 @@
 // Autor    : Ana Carolina Marinho
 // Data     : 01/01/2024
-// Objetivo : Identificar execção de ferramentas de acesso remoto
+// Objetivo : Identificar execução de ferramentas de acesso remoto
 
 DeviceProcessEvents
 //inserir ou remover executáveis (.exe) de ferramentas de acesso remoto da lista:
