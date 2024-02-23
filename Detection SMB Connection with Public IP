@@ -1,0 +1,7 @@
+DeviceProcessEvents
+| where FileName=="OUTLOOK.EXE"
+| join DeviceNetworkEvents on DeviceId
+| where RemotePort == 445
+| where RemoteIPType=="Public"
+| where ActionType1=="ConnectionSuccess"
+| project Timestamp, DeviceName, AccountUpn, ActionType1, RemoteIP
